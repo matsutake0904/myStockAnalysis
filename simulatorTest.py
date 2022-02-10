@@ -44,3 +44,36 @@ def test_moving_ave_002():
     print("expected")
     print(expected)
     assert (expected == actual).all()
+
+def test_rsi():
+    input = [100, 100, 100, 100]
+    expected = np.array([0, 0, 0, 0])
+    simu = simulator()
+    actual = simu.rsi(input)
+    print("actual")
+    print(actual)
+    print("expected")
+    print(expected)
+    assert (expected == actual).all()
+
+def test_rsi_002():
+    input = [0, 100, 0, 100]
+    expected = np.array([0, 100, 50, 50])
+    simu = simulator()
+    actual = simu.rsi(input)
+    print("actual")
+    print(actual)
+    print("expected")
+    print(expected)
+    assert (expected == actual).all()
+
+def test_rsi_003():
+    input = [0, 100, 0, 500]
+    expected = np.array([0, 100, 50, 75])
+    simu = simulator()
+    actual = simu.rsi(input)
+    print("actual")
+    print(actual)
+    print("expected")
+    print(expected)
+    assert (expected == actual).all()
