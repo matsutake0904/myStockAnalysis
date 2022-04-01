@@ -108,8 +108,13 @@ def add_diff_average_columns(reader):
         for i in range(300):
             ind = 'f_' + str(i)
             # reader.loc[reader['row_id'] == data_01['row_id']][after_ind] = data_01[data_01.columns[data_01.columns != 'row_id']].diff()[ind]
-            reader.loc[ins_list, after_ind] += reader[reader.columns[reader.columns != 'row_id']].loc[ins_list].diff()[ind]
+            reader.loc[ins_list, after_ind] += reader[reader.columns[reader.columns != 'row_id']].loc[ins_list].diff(1)[ind]
         reader.loc[ins_list, after_ind] = reader.loc[ins_list, after_ind]/300.
         # reader.loc[ins_list, after_ind] = statistics.mean([float(x) for x in diff_list])
     reader.loc[reader[after_ind].isna(), after_ind] = 0
     return reader
+
+def add_SVM(reader):
+    #サポートベクターマシン
+    after_ind = 'svm';
+
