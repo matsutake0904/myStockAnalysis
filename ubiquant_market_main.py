@@ -3,13 +3,11 @@ from ubiquant_my_library import my_library
 import pandas as pd
 
 if __name__ == '__main__':
-    #path_w = '/Users/ryo/Work/python_work/kaggle/ubiquant_market/train.csv'
+    # path_w = '/Users/ryo/Work/python_work/kaggle/ubiquant_market/train.csv'
     path_w = f'/Users/ryo/Work/python_work/kaggle/ubiquant_market/train_mabiki100.csv'
-    p_path = '/Users/ryo/Work/python_work/kaggle/ubiquant_market/train_low_memory.parquet'
-    df0 = my_library.reduce_mem_usage(pd.read_parquet(p_path))
-    # df0 = my_library.reduce_mem_usage(pd.read_csv(path_w).drop('row_id', axis=1))
-    # print(df0.diff())
-    # quit()
+
+    df0 = my_library.reduce_mem_usage(pd.read_csv(path_w))
+
     from sklearn.model_selection import train_test_split
     import lightgbm as lgb
     from lightgbm import *
@@ -19,13 +17,7 @@ if __name__ == '__main__':
     if str_type == 1:
         df = my_library.add_diff_columns(df0)
         print("____end add_diff_columns_____")
-        # features = [f'f_{i}' for i in range(300)]
-        features = []
-        # features.append('row_id')
-        features.append('time_id')
-        features.append('investment_id')
-        for i in range(300):
-            features.append(f'f_{i}')
+        features = [f'f_{i}' for i in range(300)]
         for i in range(300):
             features.append(f'diff_f_{i}')
         target = 'target'
@@ -33,26 +25,15 @@ if __name__ == '__main__':
     elif str_type == 2:
         df = my_library.add_diff_average_columns(df0)
         print("____end add_diff_average_columns_____")
-        # features = [f'f_{i}' for i in range(300)]
-        features = []
-        # features.append('row_id')
-        features.append('time_id')
-        features.append('investment_id')
-        for i in range(300):
-            features.append(f'f_{i}')
+        features = [f'f_{i}' for i in range(300)]
         features.append('diff_average')
         target = 'target'
         df_features = df[features]
-
-    reader = my_library.reduce_mem_usage(df)
-    out_path = '/Users/ryo/Work/python_work/kaggle/ubiquant_market/train_diff.parquet'
-    reader.astype('float32').to_parquet(out_path)
 
     X_train, X, Y_train, Y = train_test_split(df_features, df[target], train_size=0.6, shuffle=False)
     X_val, X_test, Y_val, Y_test = train_test_split(X, Y, train_size=0.5, shuffle=False)
 
     print("______end split data_____")
-
 
     import warnings
     import lightgbm as lgb
